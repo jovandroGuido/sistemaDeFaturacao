@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% block title %}Histórico de Vendas | FaturaPro{% endblock %}
+{% block page_title %}Histórico de Vendas{% endblock %}
+{% block content %}
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <form class="row g-3" method="get" action="{{ url_for('sales_history') }}">
+      <div class="col-md-4"><input class="form-control" name="q" placeholder="Número ou cliente" value="{{ q }}"></div>
+      <div class="col-md-3"><input class="form-control" name="date_from" type="date" value="{{ date_from }}"></div>
+      <div class="col-md-3"><input class="form-control" name="date_to" type="date" value="{{ date_to }}"></div>
+      <div class="col-md-2 d-grid"><button class="btn btn-primary">Filtrar</button></div>
+    </form>
+  </div>
+</div>
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>Número</th><th>Cliente</th><th>Pagamento</th><th>Total</th><th>Data</th><th>Ações</th></tr></thead>
+      <tbody>
+        {% for sale in sales %}
+        <tr>
+          <td>{{ sale.number }}</td>
+          <td>{{ sale.customer.name if sale.customer else 'Consumidor Final' }}</td>
+          <td>{{ sale.payment_method.name if sale.payment_method else '-' }}</td>
+          <td>Kz {{ '%.2f'|format(sale.total) }}</td>
+          <td>{{ sale.date.strftime('%d/%m/%Y %H:%M') }}</td>
+          <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('sale_invoice', sale_id=sale.id) }}">Ver fatura</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-center">Nenhuma venda encontrada.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

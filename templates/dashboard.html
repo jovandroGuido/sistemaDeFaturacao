@@ -1,0 +1,97 @@
+{% extends 'layout.html' %}
+{% block title %}Dashboard | FaturaPro{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-3 col-sm-6">
+    <div class="card shadow-sm p-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <small class="text-muted">Total de Vendas</small>
+          <h3>{{ total_sales }}</h3>
+        </div>
+        <i class="bi bi-basket3 fs-2 text-primary"></i>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-6">
+    <div class="card shadow-sm p-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <small class="text-muted">Produtos</small>
+          <h3>{{ total_products }}</h3>
+        </div>
+        <i class="bi bi-box-seam fs-2 text-success"></i>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-6">
+    <div class="card shadow-sm p-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <small class="text-muted">Clientes</small>
+          <h3>{{ total_customers }}</h3>
+        </div>
+        <i class="bi bi-people fs-2 text-warning"></i>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-6">
+    <div class="card shadow-sm p-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <small class="text-muted">Vendas Hoje</small>
+          <h3>Kz {{ '%.2f'|format(daily_sales) }}</h3>
+        </div>
+        <i class="bi bi-currency-dollar fs-2 text-danger"></i>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-4 g-4">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">Últimas Vendas</h5>
+      </div>
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead><tr><th>#</th><th>Cliente</th><th>Total</th><th>Data</th></tr></thead>
+          <tbody>
+            {% for sale in latest_sales %}
+            <tr>
+              <td>{{ sale.number }}</td>
+              <td>{{ sale.customer.name if sale.customer else 'Consumidor Final' }}</td>
+              <td>Kz {{ '%.2f'|format(sale.total) }}</td>
+              <td>{{ sale.date.strftime('%d/%m/%Y %H:%M') }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-center">Nenhuma venda encontrada.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Estoque Baixo</h5>
+      </div>
+      <div class="list-group list-group-flush">
+        {% for product in low_stock %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ product.name }}</strong><br>
+            <small class="text-muted">{{ product.category.name if product.category else 'Sem categoria' }}</small>
+          </div>
+          <span class="badge bg-danger">{{ product.stock }}</span>
+        </div>
+        {% else %}
+        <div class="list-group-item text-center text-muted">Sem produtos com estoque baixo.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

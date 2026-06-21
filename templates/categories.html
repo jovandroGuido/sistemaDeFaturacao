@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% block title %}Categorias | FaturaPro{% endblock %}
+{% block page_title %}Categorias{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <div>
+      <h5 class="mb-0">Categorias de Produto</h5>
+      <small class="text-muted">Organize seus produtos por categorias.</small>
+    </div>
+    <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#newCategoryForm">Nova Categoria</button>
+  </div>
+  <div class="collapse" id="newCategoryForm">
+    <div class="card-body border-top">
+      <form method="post" action="{{ url_for('categories_new') }}" class="row g-3">
+        <div class="col-md-8"><input class="form-control" name="name" placeholder="Nome da categoria" required></div>
+        <div class="col-md-4 d-grid"><button class="btn btn-success">Salvar categoria</button></div>
+      </form>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead><tr><th>Nome</th><th>Produtos</th><th>Ações</th></tr></thead>
+        <tbody>
+          {% for category in categories %}
+          <tr>
+            <td>{{ category.name }}</td>
+            <td>{{ category.products | length }}</td>
+            <td>
+              <form method="post" action="{{ url_for('categories_delete', category_id=category.id) }}" class="d-inline" onsubmit="return confirm('Excluir categoria? Os produtos relacionados ficarão sem categoria.');">
+                <button class="btn btn-sm btn-outline-danger">Excluir</button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="3" class="text-center">Nenhuma categoria cadastrada.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

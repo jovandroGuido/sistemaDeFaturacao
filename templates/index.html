@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+{% block title %}Ponto de Venda{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <h3>Produtos</h3>
+    <form class="mb-3" method="get">
+      <div class="input-group">
+        <input name="q" value="{{ q }}" class="form-control" placeholder="Pesquisar produto por nome ou código">
+        <button class="btn btn-outline-secondary" type="submit">Pesquisar</button>
+      </div>
+    </form>
+    <div class="row">
+      {% for p in products %}
+      <div class="col-md-6 mb-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ p.name }}</h5>
+            <p class="card-text">Código: {{ p.code }}<br>Preço: Kz {{ '%.2f'|format(p.price) }}<br>Stock: {{ p.stock }}</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post" class="d-flex">
+              <input type="hidden" name="product_id" value="{{ p.id }}">
+              <input type="number" name="quantity" value="1" min="1" max="{{ p.stock }}" class="form-control me-2" style="width:100px;">
+              <button class="btn btn-primary">Adicionar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-md-4">
+    <h4>Carrinho</h4>
+    {% if cart_items %}
+    <table class="table table-sm">
+      <thead><tr><th>Produto</th><th>Qtd</th><th>Valor</th></tr></thead>
+      <tbody>
+        {% for it in cart_items %}
+        <tr>
+          <td>{{ it.product.name }}</td>
+          <td>{{ it.qty }}</td>
+          <td>Kz {{ '%.2f'|format(it.line_total) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p>Subtotal: Kz {{ '%.2f'|format(subtotal) }}</p>
+    <p>IVA ({{ (TAX_RATE*100)|round(0) }}%): Kz {{ '%.2f'|format(tax) }}</p>
+    <p><strong>Total: Kz {{ '%.2f'|format(total) }}</strong></p>
+    <form action="{{ url_for('checkout') }}" method="post">
+      <div class="mb-2">
+        <label for="customer_id">Cliente (opcional)</label>
+        <select name="customer_id" class="form-select">
+          <option value="">Consumidor Final</option>
+          {% for c in customers %}
+          <option value="{{ c.id }}">{{ c.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-2">
+        <label>Pagamento</label>
+        <select name="payment_method" class="form-select">
+          <option>Dinheiro</option>
+          <option>Cartão</option>
+          <option>Transferência</option>
+        </select>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-success">Emitir Fatura</button>
+        <a class="btn btn-secondary" href="{{ url_for('clear_cart') }}">Limpar Carrinho</a>
+      </div>
+    </form>
+    {% else %}
+    <p>Carrinho vazio.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

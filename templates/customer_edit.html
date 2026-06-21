@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block title %}Editar Cliente | FaturaPro{% endblock %}
+{% block page_title %}Editar Cliente{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form method="post" class="row g-3">
+      <div class="col-md-6"><label class="form-label">Nome</label><input class="form-control" name="name" value="{{ customer.name }}" required></div>
+      <div class="col-md-3"><label class="form-label">Telefone</label><input class="form-control" name="phone" value="{{ customer.phone }}"></div>
+      <div class="col-md-3"><label class="form-label">Email</label><input class="form-control" name="email" type="email" value="{{ customer.email }}"></div>
+      <div class="col-12"><label class="form-label">Endereço</label><input class="form-control" name="address" value="{{ customer.address }}"></div>
+      <div class="col-12 d-flex gap-2"><button class="btn btn-success">Salvar alterações</button><a class="btn btn-secondary" href="{{ url_for('customers') }}">Cancelar</a></div>
+    </form>
+  </div>
+</div>
+{% endblock %}

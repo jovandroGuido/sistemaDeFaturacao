@@ -1,0 +1,69 @@
+{% extends 'layout.html' %}
+{% block title %}Fatura {{ sale.number }} | FaturaPro{% endblock %}
+{% block page_title %}Fatura {{ sale.number }}{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start mb-4">
+      <div>
+        <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="Logo" style="height: 50px;">
+        <h4 class="mt-3">FaturaPro Comércio</h4>
+        <p class="mb-0">Avenida Quilómetro 4, Luanda</p>
+        <p class="mb-0">Telefone: +244 923 000 000</p>
+        <p class="mb-0">NUIT: 5000123456</p>
+      </div>
+      <div class="text-end">
+        <h5>Fatura</h5>
+        <p class="mb-1"><strong>{{ sale.number }}</strong></p>
+        <p class="mb-0">{{ sale.date.strftime('%d/%m/%Y %H:%M') }}</p>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <h6>Cliente</h6>
+        <p class="mb-0">{{ sale.customer.name if sale.customer else 'Consumidor Final' }}</p>
+        <p class="mb-0">{{ sale.customer.email if sale.customer and sale.customer.email else '' }}</p>
+        <p class="mb-0">{{ sale.customer.phone if sale.customer and sale.customer.phone else '' }}</p>
+        <p class="mb-0">{{ sale.customer.address if sale.customer and sale.customer.address else '' }}</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <h6>Pagamento</h6>
+        <p class="mb-0">{{ sale.payment_method.name if sale.payment_method else 'Não informado' }}</p>
+        <p class="mb-0">Vendedor: {{ sale.user.name if sale.user else 'Sistema' }}</p>
+      </div>
+    </div>
+    <div class="table-responsive mb-4">
+      <table class="table table-bordered">
+        <thead class="table-light"><tr><th>Produto</th><th>Qtd</th><th>Preço unit.</th><th>Total</th></tr></thead>
+        <tbody>
+          {% for item in sale.items %}
+          <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>Kz {{ '%.2f'|format(item.unit_price) }}</td>
+            <td>Kz {{ '%.2f'|format(item.total_price) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="row justify-content-end">
+      <div class="col-md-5">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <p class="d-flex justify-content-between mb-2"><span>Subtotal</span><span>Kz {{ '%.2f'|format(sale.subtotal) }}</span></p>
+            <p class="d-flex justify-content-between mb-2"><span>IVA</span><span>Kz {{ '%.2f'|format(sale.tax) }}</span></p>
+            <p class="d-flex justify-content-between mb-2"><span>Desconto</span><span>Kz {{ '%.2f'|format(sale.discount) }}</span></p>
+            <hr>
+            <p class="d-flex justify-content-between fs-5"><strong>Total Geral</strong><strong>Kz {{ '%.2f'|format(sale.total) }}</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" onclick="window.print()">Imprimir / Salvar PDF</button>
+      <a class="btn btn-secondary" href="{{ url_for('sales_history') }}">Voltar ao histórico</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

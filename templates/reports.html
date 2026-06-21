@@ -1,0 +1,69 @@
+{% extends 'layout.html' %}
+{% block title %}Relatórios | FaturaPro{% endblock %}
+{% block page_title %}Relatórios{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm p-3">
+      <h6>Relatório Diário</h6>
+      <p class="fs-4">Kz {{ '%.2f'|format(daily_total) }}</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm p-3">
+      <h6>Relatório Mensal</h6>
+      <p class="fs-4">Kz {{ '%.2f'|format(monthly_total) }}</p>
+    </div>
+  </div>
+</div>
+<div class="row g-4 mt-3">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header"><h5 class="mb-0">Produtos mais vendidos</h5></div>
+      <div class="list-group list-group-flush">
+        {% for name, sold in top_products %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ name }}</span>
+          <span class="badge bg-primary">{{ sold }}</span>
+        </div>
+        {% else %}
+        <div class="list-group-item text-center text-muted">Nenhum registro ainda.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header"><h5 class="mb-0">Clientes que mais compram</h5></div>
+      <div class="list-group list-group-flush">
+        {% for name, spent in top_customers %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ name }}</span>
+          <span class="badge bg-success">Kz {{ '%.2f'|format(spent) }}</span>
+        </div>
+        {% else %}
+        <div class="list-group-item text-center text-muted">Nenhum cliente ainda.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card shadow-sm mt-3">
+  <div class="card-header"><h5 class="mb-0">Estoque Baixo</h5></div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>Produto</th><th>Stock</th></tr></thead>
+      <tbody>
+        {% for product in low_stock %}
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product.stock }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="2" class="text-center">Tudo OK no estoque.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,7 +1,9 @@
 import os
 from flask import Flask
-from database import init_database, db
-from models import User, Category, Product, Customer, PaymentMethod
+# pyrefly: ignore [missing-import]
+from src.database.config.database import init_database, db
+# pyrefly: ignore [missing-import]
+from src.database.models.models import User, Category, Product, Customer, PaymentMethod
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)

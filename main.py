@@ -2,11 +2,13 @@ import os
 from functools import wraps
 from datetime import datetime, date
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
-from database import init_database, db
-from models import User, Category, Product, Customer, PaymentMethod, Sale, SaleItem, StockMovement
+# pyrefly: ignore [missing-import]
+from src.database.config.database import init_database, db
+# pyrefly: ignore [missing-import]
+from src.database.models.models import User, Category, Product, Customer, PaymentMethod, Sale, SaleItem, StockMovement
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-app = Flask(__name__)
+app = Flask(__name__, template_folder='src/templates', static_folder='src/static')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-change-me')
 init_database(app)
 

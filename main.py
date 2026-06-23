@@ -1,62 +1,21 @@
 import os
-from functools import wraps
 from datetime import datetime, date
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 # pyrefly: ignore [missing-import]
 from src.database.config.database import init_database, db
 # pyrefly: ignore [missing-import]
 from src.database.models.models import User, Category, Product, Customer, PaymentMethod, Sale, SaleItem, StockMovement
+# pyrefly: ignore [missing-import]
+from src.lib.login_required import login_required
+# pyrefly: ignore [missing-import]
+from src.cart.cart import get_cart, calculate_cart, save_cart, generate_sale_number
+# pyrefly: ignore [missing-import]
+from src.lib.env import TAX_RATE, SECRET_KEY
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__, template_folder='src/templates', static_folder='src/static')
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-change-me')
+app.config['SECRET_KEY'] = SECRET_KEY
 init_database(app)
-
-# Taxa de IVA padrão
-TAX_RATE = 0.23
-
-# Decorator para rotas protegidas
-def login_required(view):
-    @wraps(view)
-    def wrapped_view(**kwargs):
-        if 'user_id' not in session:
-            return redirect(url_for('login'))
-        return view(**kwargs)
-    return wrapped_view
-
-# Utilitários de carrinho
-def get_cart():
-    return session.get('cart', {})
-
-def save_cart(cart):
-    session['cart'] = cart
-
-# Calcula valores do carrinho
-def calculate_cart(cart):
-    items = []
-    subtotal = 0.0
-    for pid, quantity in cart.items():
-        product = Product.query.get(int(pid))
-        if not product:
-            continue
-        total_price = round(product.price * quantity, 2)
-        items.append({
-            'product': product,
-            'quantity': quantity,
-            'total_price': total_price,
-        })
-        subtotal += total_price
-    subtotal = round(subtotal, 2)
-    discount = 0.0
-    tax = round((subtotal - discount) * TAX_RATE, 2)
-    total = round(subtotal - discount + tax, 2)
-    return items, subtotal, discount, tax, total
-
-# Gera número de venda sequencial
-def generate_sale_number():
-    last_sale = Sale.query.order_by(Sale.id.desc()).first()
-    next_index = 1 if not last_sale else last_sale.id + 1
-    return f'INV-{next_index:05d}'
 
 @app.context_processor
 def inject_globals():

@@ -4,10 +4,12 @@ from flask import Flask
 from src.database.config.database import init_database, db
 # pyrefly: ignore [missing-import]
 from src.database.models.models import User, Category, Product, Customer, PaymentMethod
+# pyrefly: ignore [missing-import]
+from src.lib.env import SECRET_KEY
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-change-me')
+app.config['SECRET_KEY'] = SECRET_KEY
 init_database(app)
 
 with app.app_context():

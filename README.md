@@ -1,8 +1,10 @@
 # Sistema de Faturação Profissional - FaturaPro
 
-Aplicação de faturação local construída com Flask, SQLite, HTML5, CSS3 e JavaScript.
+> Aplicação de faturação local construída com Flask, SQLite, HTML5, CSS3 e JavaScript.
 
-## Estrutura do projeto
+---
+
+## 📂 Estrutura do projeto
 
 - `app.py` - Configuração da aplicação Flask e rotas.
 - `database.py` - Inicialização do SQLite/SQLAlchemy.
@@ -17,25 +19,38 @@ Aplicação de faturação local construída com Flask, SQLite, HTML5, CSS3 e Ja
 - `database/` - Arquivo SQLite `app.db`.
 - `backup/` - Pasta para futuros backups.
 
-## Requisitos
+--- 
+
+## 🧰 Requisitos
 
 - Python 3.10+
 
-## Instalar dependências
+---
+
+## 🔧 Instalação de dependências
+
+
+#### Instalar o gerenciador de pacotes uv
 
 ```bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
+ `curl -LsSf https://astral.sh/get-uv | bash` - Linux
 ```
 
-## Inicializar a base de dados
+#### Instalar as dependências
+```bash
+uv sync
+```
+---
+
+## 🏁 Inicializar a base de dados
 
 ```bash
 python db_init.py
 ```
 
-## Executar a aplicação
+---
+
+## 🚀 Executar a aplicação
 
 ```bash
 python app.py
@@ -47,12 +62,16 @@ Abra no navegador:
 http://127.0.0.1:5000/
 ```
 
-## Login inicial
+--- 
+
+## 🔑 Login inicial
 
 - E-mail: `admin@faturapro.ao`
 - Senha: `admin123`
 
-## Funcionalidades implementadas
+--- 
+
+## ✨ Funcionalidades implementadas
 
 - Login de usuários com senha criptografada.
 - Dashboard com total de vendas, clientes, produtos, vendas do dia e estoque baixo.
@@ -66,7 +85,9 @@ http://127.0.0.1:5000/
 - Histórico de vendas com filtro por número, cliente e data.
 - Relatórios diários, mensais, produtos mais vendidos, clientes que mais compram e estoque baixo.
 
-## Como testar todas as funcionalidades
+---
+
+## 📌 Como testar todas as funcionalidades
 
 1. Inicie a aplicação e acesse `http://127.0.0.1:5000/`.
 2. Entre com o usuário administrador.
@@ -76,7 +97,9 @@ http://127.0.0.1:5000/
 6. Crie categorias em **Categorias**.
 7. Abra **Nova Venda**, adicione produtos ao carrinho, escolha cliente e forma de pagamento e finalize.
 8. Em **Histórico de Vendas** veja as faturas geradas e abra cada fatura.
-9. Em **Relatórios** confira os principais indicadores do sistema.
+9. Em **Relatórios** confira os principais indicadores do sistema.~
+
+--- 
 
 ## Observações
 

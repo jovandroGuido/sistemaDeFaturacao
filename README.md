@@ -6,18 +6,34 @@
 
 ## 📂 Estrutura do projeto
 
-- `app.py` - Configuração da aplicação Flask e rotas.
-- `database.py` - Inicialização do SQLite/SQLAlchemy.
-- `models.py` - Definição dos modelos de dados (usuários, produtos, clientes, vendas, itens, categorias, pagamento).
-- `db_init.py` - Cria o banco e insere dados iniciais.
-- `requirements.txt` - Dependências Python.
-- `README.md` - Instruções para executar o projeto.
-- `templates/` - Páginas HTML Jinja2.
-- `static/css/` - Estilos personalizados.
-- `static/js/` - JavaScript do frontend.
-- `static/img/` - Imagem/logo do sistema.
-- `database/` - Arquivo SQLite `app.db`.
-- `backup/` - Pasta para futuros backups.
+O projeto foi reestruturado de forma modular e segue a seguinte organização:
+
+- `main.py` - Ponto de entrada do aplicativo Flask (com a fábrica de aplicação `create_app`).
+- `pyproject.toml` / `uv.lock` - Configurações do projeto e de dependências gerenciadas via `uv`.
+- `.env` / `.env.example` - Configurações de variáveis de ambiente.
+- `src/` - Código-fonte principal da aplicação:
+  - `database/` - Configuração e modelos de persistência de dados:
+    - `config/database.py` - Configuração e inicialização do banco de dados SQLite/SQLAlchemy.
+    - `data/` - Pasta contendo o banco de dados local (`app.db`).
+    - `models/models.py` - Definições das entidades de banco de dados (User, Customer, Product, etc.).
+    - `scripts/db_init.py` - Script executável para inicializar o banco de dados com dados fictícios de exemplo.
+  - `routes/` - Controladores da aplicação modularizados com Flask Blueprints:
+    - `__init__.py` - Arquivo agregador dos Blueprints das rotas.
+    - `auth.py` - Rotas de autenticação (login, logout).
+    - `dashboard.py` - Rotas do painel administrativo.
+    - `products.py` - Rotas de gestão de produtos.
+    - `category.py` - Rotas de gestão de categorias.
+    - `customer.py` - Rotas de gestão de clientes.
+    - `sales.py` - Rotas do PDV (nova venda, carrinho, finalização e histórico).
+    - `reports.py` - Rotas de relatórios e estatísticas.
+    - `api.py` - Endpoints de APIs internas (como busca rápida de produtos).
+  - `services/` - Camada de regras de negócio:
+    - `cart/cart.py` - Utilitários de carrinho e cálculos de venda.
+  - `lib/` - Bibliotecas utilitárias e ajudantes compartilhados:
+    - `env.py` - Leitor seguro das variáveis de ambiente.
+    - `login_required.py` - Decorator de controle de acesso a rotas.
+  - `templates/` - Páginas Jinja2 HTML.
+  - `static/` - Arquivos estáticos estruturados (css, js, imagens).
 
 --- 
 
@@ -45,7 +61,7 @@ uv sync
 ## 🏁 Inicializar a base de dados
 
 ```bash
-python db_init.py
+python -m src.database.scripts.db_init
 ```
 
 ---
@@ -53,7 +69,7 @@ python db_init.py
 ## 🚀 Executar a aplicação
 
 ```bash
-python app.py
+python main.py
 ```
 
 Abra no navegador:

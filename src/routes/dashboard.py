@@ -8,13 +8,13 @@ from src.database.config.database import db
 # pyrefly: ignore [missing-import]
 from datetime import date
 
-dashboard = Blueprint('dashboard', __name__)
+dashboard_bp = Blueprint('dashboard', __name__)
 
-@dashboard.route('/')
+@dashboard_bp.route('/')
 def home():
     return redirect(url_for('dashboard'))
 
-@dashboard.route('/dashboard')
+@dashboard_bp.route('/dashboard')
 @login_required
 def dashboard():
     total_sales = Sale.query.count()

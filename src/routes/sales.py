@@ -6,7 +6,7 @@ from src.database.models.models import Product, Customer, PaymentMethod, Sale, S
 # pyrefly: ignore [missing-import]
 from src.lib.login_required import login_required
 # pyrefly: ignore [missing-import]
-from src.cart.cart import get_cart, calculate_cart, save_cart, generate_sale_number
+from src.services.cart.cart import get_cart, calculate_cart, save_cart, generate_sale_number
 # pyrefly: ignore [missing-import]
 from src.lib.env import TAX_RATE
 from datetime import datetime

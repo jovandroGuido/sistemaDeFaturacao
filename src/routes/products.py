@@ -7,9 +7,9 @@ from src.lib.login_required import login_required
 # pyrefly: ignore [missing-import]
 from src.database.config.database import db
 
-products = Blueprint('products', __name__)
+products_bp = Blueprint('products', __name__)
 
-@products.route('/products')
+@products_bp.route('/products')
 @login_required
 def products():
     query = request.args.get('q', '').strip()
@@ -20,7 +20,7 @@ def products():
     categories = Category.query.order_by(Category.name).all()
     return render_template('products.html', products=products, categories=categories, q=query)
 
-@products.route('/products/new', methods=['POST'])
+@products_bp.route('/products/new', methods=['POST'])
 @login_required
 def products_new():
     code = request.form['code'].strip()
@@ -43,7 +43,7 @@ def products_new():
     flash('Produto cadastrado com sucesso.', 'success')
     return redirect(url_for('products'))
 
-@products.route('/products/<int:product_id>/edit', methods=['GET', 'POST'])
+@products_bp.route('/products/<int:product_id>/edit', methods=['GET', 'POST'])
 @login_required
 def products_edit(product_id):
     product = Product.query.get_or_404(product_id)
@@ -59,7 +59,7 @@ def products_edit(product_id):
         return redirect(url_for('products'))
     return render_template('product_edit.html', product=product, categories=categories)
 
-@products.route('/products/<int:product_id>/delete', methods=['POST'])
+@products_bp.route('/products/<int:product_id>/delete', methods=['POST'])
 @login_required
 def products_delete(product_id):
     product = Product.query.get_or_404(product_id)

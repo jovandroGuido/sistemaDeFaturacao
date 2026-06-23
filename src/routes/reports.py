@@ -7,9 +7,9 @@ from src.database.models.models import Product, Customer, Sale, SaleItem
 from src.lib.login_required import login_required
 from datetime import date
 
-reports = Blueprint('reports', __name__)
+reports_bp = Blueprint('reports', __name__)
 
-@reports.route('/reports')
+@reports_bp.route('/reports')
 @login_required
 def reports():
     today = date.today()

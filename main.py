@@ -30,11 +30,11 @@ def create_app():
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
         
-    return app
+    @app.context_processor
+    def inject_globals():
+        return {'tax_rate': TAX_RATE, 'current_user': session.get('user_name')}
 
-@app.context_processor
-def inject_globals():
-    return {'tax_rate': TAX_RATE, 'current_user': session.get('user_name')}
+    return app
 
 if __name__ == '__main__':
     app = create_app()

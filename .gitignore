@@ -1,0 +1,15 @@
+#python
+__pycache__/
+*.py[cod]
+*$py.class
+
+#virtual env
+.venv
+.env
+
+#IDE
+.idea
+*.swp
+
+#logs
+logs

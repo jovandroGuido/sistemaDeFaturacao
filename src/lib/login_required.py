@@ -6,6 +6,6 @@ def login_required(view):
     @wraps(view)
     def wrapped_view(**kwargs):
         if 'user_id' not in session:
-            return redirect(url_for('login'))
+            return redirect(url_for('auth.login'))
         return view(**kwargs)
     return wrapped_view

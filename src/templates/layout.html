@@ -16,13 +16,13 @@
           <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="Logo" class="logo mb-2">
         </div>
         <nav class="nav flex-column px-3">
-          <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
-          <a class="nav-link" href="{{ url_for('sales_new') }}">Nova Venda</a>
-          <a class="nav-link" href="{{ url_for('sales_history') }}">Histórico de Vendas</a>
-          <a class="nav-link" href="{{ url_for('products') }}">Produtos</a>
-          <a class="nav-link" href="{{ url_for('customers') }}">Clientes</a>
-          <a class="nav-link" href="{{ url_for('categories') }}">Categorias</a>
-          <a class="nav-link" href="{{ url_for('reports') }}">Relatórios</a>
+          <a class="nav-link" href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
+          <a class="nav-link" href="{{ url_for('sales.sales_new') }}">Nova Venda</a>
+          <a class="nav-link" href="{{ url_for('sales.sales_history') }}">Histórico de Vendas</a>
+          <a class="nav-link" href="{{ url_for('products.products') }}">Produtos</a>
+          <a class="nav-link" href="{{ url_for('customer.customers') }}">Clientes</a>
+          <a class="nav-link" href="{{ url_for('category.categories') }}">Categorias</a>
+          <a class="nav-link" href="{{ url_for('reports.reports') }}">Relatórios</a>
         </nav>
       </aside>
       <div class="flex-fill">
@@ -33,7 +33,7 @@
           </div>
           <div class="d-flex align-items-center gap-3">
             <small class="text-muted">Olá, {{ current_user or 'Usuário' }}</small>
-            <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('logout') }}">Logout</a>
+            <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('auth.logout') }}">Logout</a>
           </div>
         </header>
         <main class="container-fluid p-4">

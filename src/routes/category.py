@@ -17,24 +17,51 @@ def categories():
 @category.route('/categories/new', methods=['POST'])
 @login_required
 def categories_new():
-    name = request.form['name'].strip()
+    name = request.form.get('name', '').strip()
+    
+    # 1. Validação de Campo Vazio
     if not name:
         flash('Nome da categoria é obrigatório.', 'warning')
-        return redirect(url_for('categories'))
-    category = Category(name=name)
-    db.session.add(category)
-    db.session.commit()
-    flash('Categoria adicionada.', 'success')
-    return redirect(url_for('categories'))
+        return redirect(url_for('category.categories'))
+        
+    # 2. Validação de Dados Duplicados
+    existing = Category.query.filter_by(name=name).first()
+    if existing:
+        flash('Já existe uma categoria cadastrada com este nome.', 'warning')
+        return redirect(url_for('category.categories'))
+        
+    # 3. Tratamento de Erros de Base de Dados
+    try:
+        new_category = Category(name=name)
+        db.session.add(new_category)
+        db.session.commit()
+        flash('Categoria adicionada com sucesso.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        from src.lib.logger import log_error  # pyrefly: ignore [missing-import]
+        log_error(f"Erro de base de dados ao cadastrar categoria '{name}'", e)
+        flash('Erro no banco de dados ao salvar a categoria.', 'danger')
+        
+    return redirect(url_for('category.categories'))
 
 @category.route('/categories/<int:category_id>/delete', methods=['POST'])
 @login_required
 def categories_delete(category_id):
-    category = Category.query.get_or_404(category_id)
-    if category.products:
+    category_to_delete = Category.query.get_or_404(category_id)
+    
+    if category_to_delete.products:
         flash('Não é possível excluir uma categoria que possui produtos.', 'warning')
-        return redirect(url_for('categories'))
-    db.session.delete(category)
-    db.session.commit()
-    flash('Categoria excluída.', 'success')
-    return redirect(url_for('categories'))
+        return redirect(url_for('category.categories'))
+        
+    # 3. Tratamento de Erros de Base de Dados
+    try:
+        db.session.delete(category_to_delete)
+        db.session.commit()
+        flash('Categoria excluída com sucesso.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        from src.lib.logger import log_error  # pyrefly: ignore [missing-import]
+        log_error(f"Erro ao excluir categoria {category_id}", e)
+        flash('Erro no banco de dados ao excluir a categoria.', 'danger')
+        
+    return redirect(url_for('category.categories'))

@@ -8,13 +8,13 @@
       <h5 class="mb-0">Cadastro de Clientes</h5>
       <small class="text-muted">Gerencie clientes e informações de contato.</small>
     </div>
-    <form class="d-flex" method="get" action="{{ url_for('customers') }}">
+    <form class="d-flex" method="get" action="{{ url_for('customer.customers') }}">
       <input class="form-control form-control-sm me-2" name="q" placeholder="Pesquisar" value="{{ q }}">
       <button class="btn btn-outline-primary btn-sm">Buscar</button>
     </form>
   </div>
   <div class="card-body">
-    <form method="post" action="{{ url_for('customers_new') }}" class="row g-3 mb-4">
+    <form method="post" action="{{ url_for('customer.customers_new') }}" class="row g-3 mb-4">
       <div class="col-md-3"><input class="form-control" name="name" placeholder="Nome" required></div>
       <div class="col-md-3"><input class="form-control" name="phone" placeholder="Telefone"></div>
       <div class="col-md-3"><input class="form-control" name="email" placeholder="Email"></div>
@@ -32,8 +32,8 @@
             <td>{{ customer.email }}</td>
             <td>{{ customer.address }}</td>
             <td>
-              <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('customers_edit', customer_id=customer.id) }}">Editar</a>
-              <form action="{{ url_for('customers_delete', customer_id=customer.id) }}" method="post" class="d-inline" onsubmit="return confirm('Deseja mesmo excluir este cliente?');">
+              <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('customer.customers_edit', customer_id=customer.id) }}">Editar</a>
+              <form action="{{ url_for('customer.customers_delete', customer_id=customer.id) }}" method="post" class="d-inline" onsubmit="return confirm('Deseja mesmo excluir este cliente?');">
                 <button class="btn btn-sm btn-outline-danger">Excluir</button>
               </form>
             </td>

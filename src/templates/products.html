@@ -8,13 +8,13 @@
       <h5 class="mb-0">Cadastro de Produtos</h5>
       <small class="text-muted">Adicione novos produtos ao estoque.</small>
     </div>
-    <form class="d-flex" method="get" action="{{ url_for('products') }}">
+    <form class="d-flex" method="get" action="{{ url_for('products.products') }}">
       <input class="form-control form-control-sm me-2" name="q" placeholder="Pesquisar" value="{{ q }}">
       <button class="btn btn-outline-primary btn-sm">Buscar</button>
     </form>
   </div>
   <div class="card-body">
-    <form method="post" action="{{ url_for('products_new') }}" class="row g-3 mb-4">
+    <form method="post" action="{{ url_for('products.products_new') }}" class="row g-3 mb-4">
       <div class="col-md-2"><input class="form-control" name="code" placeholder="Código" required></div>
       <div class="col-md-3"><input class="form-control" name="name" placeholder="Nome" required></div>
       <div class="col-md-3">
@@ -41,8 +41,8 @@
             <td>Kz {{ '%.2f'|format(product.price) }}</td>
             <td>{{ product.stock }}</td>
             <td>
-              <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('products_edit', product_id=product.id) }}">Editar</a>
-              <form action="{{ url_for('products_delete', product_id=product.id) }}" method="post" class="d-inline" onsubmit="return confirm('Confirmar exclusão deste produto?');">
+              <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('products.products_edit', product_id=product.id) }}">Editar</a>
+              <form action="{{ url_for('products.products_delete', product_id=product.id) }}" method="post" class="d-inline" onsubmit="return confirm('Confirmar exclusão deste produto?');">
                 <button class="btn btn-sm btn-outline-danger">Excluir</button>
               </form>
             </td>

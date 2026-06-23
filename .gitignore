@@ -1,3 +1,5 @@
+# ======= ARQUIVO QUE IMPEDE DE ARQUIVOS QUE NÃO SÃO PRECISOS SEJAM ENVIADOS AO GITHUB ===========
+
 #python
 __pycache__/
 *.py[cod]
